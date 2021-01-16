@@ -69,7 +69,7 @@ char isPrimeBase(unsigned long long check, int base) {
 	return isPrimeBase;
 }
 
-unsigned long long find(unsigned long long start, int base) {
+unsigned long long find(unsigned long long start, int base, int method, char quiet, char exstart) {
 	/* 
 	 * All primes are either above or below multiples
 	 * of 6 (except 2 and 3). This  is  because  only
@@ -81,6 +81,7 @@ unsigned long long find(unsigned long long start, int base) {
 	 * actually test primality,  you can use Fermat's
 	 * little theorem.
 	 * */
+	
 	if (start < base) {
 		for (start += (start - 1) % 2; start < base; start += 2) {
 			if (isPrime(start)) return start;
@@ -103,17 +104,28 @@ unsigned long long find(unsigned long long start, int base) {
 		while (iterator != NULL) {
 			unsigned long long candidate = block + iterator->value;
 			iterator = iterator->next;
-			if (candidate < start) continue;
-			if (isPrimeProvide(candidate, base, &head)) {
-			//if (isPrimeBase(candidate, base)) {
-			//if (isPrime(candidate)) {
+			if (exstart && candidate < start) continue;
+			char prime = 0;
+			switch (method) {
+				case 0:
+					prime = isPrimeProvide(candidate, base, &head);
+					break;
+				case 1:
+					prime = isPrime(candidate);
+					break;
+			}
+			if (prime) {
 				return candidate;
 			}
-			printf("Just checked a prime %lu\n", candidate);
+			if (!quiet) {
+				printf("Just checked a prime %lu\n", candidate);
+			}
 		}
-		start += base;
+		block += base;
 		blocksCompleted++;
-		printf("%lu blocks completed\n", blocksCompleted);
+		if (!quiet) {
+			printf("%lu blocks completed\n", blocksCompleted);
+		}
 	}
 	return 0;
 }
