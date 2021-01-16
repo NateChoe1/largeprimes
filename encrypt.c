@@ -26,6 +26,6 @@ int main(int argc, char *argv[]) {
 		"This is free software, and you are welcome to redistribute it\n",
 		"under certain conditions; type see license.txt for details.\n"
 	);
-	printf("%lu\n", find(6103612132986129756, 210));
+	printf("%lu\n", find(1103612132986129756, 210));
 	return 0;
 }

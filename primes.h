@@ -102,13 +102,13 @@ unsigned long long find(unsigned long long start, int base) {
 		iterator = &head;
 		while (iterator != NULL) {
 			unsigned long long candidate = block + iterator->value;
-			//if (candidate < start) continue;
+			iterator = iterator->next;
+			if (candidate < start) continue;
 			if (isPrimeProvide(candidate, base, &head)) {
 			//if (isPrimeBase(candidate, base)) {
 			//if (isPrime(candidate)) {
 				return candidate;
 			}
-			iterator = iterator->next;
 			printf("Just checked a prime %lu\n", candidate);
 		}
 		start += base;
